@@ -7,6 +7,7 @@ using Roomies.Application.Interfaces.Repositories;
 using Roomies.Application.Interfaces.Services;
 using Roomies.Application.Models;
 using Roomies.Domain.Entities;
+using Roomies.Domain.Enums;
 
 namespace Roomies.Application.Services
 {
@@ -40,7 +41,17 @@ namespace Roomies.Application.Services
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name.Trim(),
-                Description = request.Description.Trim()
+                Description = request.Description.Trim(),
+                Members = new List<HouseholdMember>()
+                {
+                    new HouseholdMember
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = _currentUserService.UserId,
+                        MemberTypeId = MemberType.Admin,
+                        JoinedAt = DateTime.UtcNow
+                    }
+                }
             };
 
             await _householdRepository.AddHouseholdAsync(household);

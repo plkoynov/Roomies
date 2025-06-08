@@ -24,4 +24,16 @@ public enum ErrorCodes
 
     [Description("User not found.")]
     UserNotFound = 1006,
+
+    [Description("Missing household data.")]
+    MissingHouseholdData = 2000,
+
+    [Description("Household name must not be null, empty, or exceed the maximum length.")]
+    InvalidHouseholdNameFormat = 2001,
+
+    [Description("Household description must not exceed the maximum length.")]
+    InvalidDescriptionFormat = 2002,
+
+    [Description("A household with the same name already exists for the user.")]
+    HouseholdAlreadyExists = 2003,
 }

@@ -21,6 +21,7 @@ public static class PersistanceExtensions
 
         // Register repositories
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IHouseholdRepository, HouseholdRepository>();
 
         // Register unit of work
         services.AddScoped<IUnitOfWork, UnitOfWork>();

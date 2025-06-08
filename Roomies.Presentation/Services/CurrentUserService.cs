@@ -15,6 +15,21 @@ namespace Roomies.Presentation.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public Guid UserId
+        {
+            get
+            {
+                var user = _httpContextAccessor.HttpContext?.User;
+                if (user == null)
+                {
+                    throw new InvalidOperationException("No user is currently authenticated.");
+                }
+
+                var id = user.FindFirstValue(ClaimTypes.NameIdentifier);
+                return Guid.Parse(id);
+            }
+        }
+
         public CurrentUserDto GetCurrentUser()
         {
             var user = _httpContextAccessor.HttpContext?.User;

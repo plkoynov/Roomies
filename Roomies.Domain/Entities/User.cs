@@ -13,4 +13,5 @@ public class User : IEntity
     // Navigation properties
     public ICollection<Household> Households { get; set; } = new List<Household>();
     public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+    public ICollection<File> Files { get; set; } = new List<File>();
 }

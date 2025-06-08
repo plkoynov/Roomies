@@ -19,4 +19,5 @@ public class ExpenseShare : IAuditableEntity
     public Expense Expense { get; set; }
     public User UpdatedBy { get; set; }
     public User Creator { get; set; }
+    public User User { get; set; }
 }

@@ -23,4 +23,5 @@ public class Expense : IAuditableEntity
     public User User { get; set; }
     public ExpenseCategory Category { get; set; }
     public ICollection<ExpenseShare> Shares { get; set; } = new List<ExpenseShare>();
+    public ICollection<ExpenseAttachment> Attachments { get; set; } = new List<ExpenseAttachment>();
 }

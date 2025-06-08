@@ -16,4 +16,5 @@ public class File : IAuditableEntity
 
     // Navigation properties
     public ICollection<ExpenseAttachment> Attachments { get; set; } = new List<ExpenseAttachment>();
+    public User Creator { get; set; }
 }

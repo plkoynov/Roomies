@@ -12,4 +12,5 @@ public class Household : IAuditableEntity
     // Navigation properties
     public ICollection<HouseholdMember> Members { get; set; } = new List<HouseholdMember>();
     public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+    public ICollection<HouseholdExpenseCategories> HouseholdExpenseCategories { get; set; } = new List<HouseholdExpenseCategories>();
 }

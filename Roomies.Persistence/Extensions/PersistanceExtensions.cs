@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Roomies.Application.Interfaces;
+using Roomies.Application.Interfaces.Repositories;
 using Roomies.Persistence;
+using Roomies.Persistence.Repositories;
 
 public static class PersistanceExtensions
 {
@@ -17,8 +20,10 @@ public static class PersistanceExtensions
         );
 
         // Register repositories
+        services.AddScoped<IUserRepository, UserRepository>();
 
         // Register unit of work
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

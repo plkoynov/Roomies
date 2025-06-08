@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roomies.Persistence", "Room
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roomies.Presentation", "Roomies.Presentation\Roomies.Presentation.csproj", "{2533688C-B5BC-4645-B614-D4F946CD9DDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roomies.Application.Tests", "Roomies.Application.Tests\Roomies.Application.Tests.csproj", "{4D9D05EE-B284-4158-9A6B-84C4548EA842}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{2533688C-B5BC-4645-B614-D4F946CD9DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2533688C-B5BC-4645-B614-D4F946CD9DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2533688C-B5BC-4645-B614-D4F946CD9DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D9D05EE-B284-4158-9A6B-84C4548EA842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D9D05EE-B284-4158-9A6B-84C4548EA842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D9D05EE-B284-4158-9A6B-84C4548EA842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D9D05EE-B284-4158-9A6B-84C4548EA842}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

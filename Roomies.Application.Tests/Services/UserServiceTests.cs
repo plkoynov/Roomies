@@ -1,3 +1,6 @@
+using System;
+using System.Net;
+using System.Threading.Tasks;
 using Moq;
 using Roomies.Application.Enums;
 using Roomies.Application.Interfaces;
@@ -6,6 +9,7 @@ using Roomies.Application.Interfaces.Services;
 using Roomies.Application.Models;
 using Roomies.Application.Services;
 using Roomies.Domain.Entities;
+using Xunit;
 
 namespace Roomies.Application.Tests.Services
 {
@@ -208,6 +212,39 @@ namespace Roomies.Application.Tests.Services
             // Assert
             Assert.False(result.IsSuccess);
             Assert.Equal(ErrorCodes.InvalidCredentials, result.Error);
+        }
+
+        [Fact]
+        public async Task GetUserDetailsByIdAsync_ShouldReturnUserDetails_WhenUserExists()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var user = new User { Id = userId, Name = "John Doe", Email = "john.doe@example.com" };
+            _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(userId)).ReturnsAsync(user);
+
+            // Act
+            var result = await _userService.GetUserDetailsByIdAsync(userId);
+
+            // Assert
+            Assert.True(result.IsSuccess);
+            Assert.Equal(user.Name, result.Data.Name);
+            Assert.Equal(user.Email, result.Data.Email);
+        }
+
+        [Fact]
+        public async Task GetUserDetailsByIdAsync_ShouldReturnError_WhenUserDoesNotExist()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(userId)).ReturnsAsync(default(User));
+
+            // Act
+            var result = await _userService.GetUserDetailsByIdAsync(userId);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.Equal(ErrorCodes.UserNotFound, result.Error);
+            Assert.Equal((int)HttpStatusCode.NotFound, result.StatusCode);
         }
     }
 }

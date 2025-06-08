@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Roomies.Application.Constants;
 using Roomies.Application.Enums;
@@ -16,13 +17,16 @@ namespace Roomies.Application.Services
 {
     public class UserService : IUserService
     {
+        private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public UserService(
+            IConfiguration configuration,
             IUserRepository userRepository,
             IUnitOfWork unitOfWork)
         {
+            _configuration = configuration;
             _userRepository = userRepository;
             _unitOfWork = unitOfWork;
         }
@@ -54,7 +58,7 @@ namespace Roomies.Application.Services
             await _unitOfWork.SaveChangesAsync();
 
             // Assuming JWT token generation logic is implemented
-            string jwtToken = GenerateJwtToken(newUser, registerUserDto.TokenSecret);
+            string jwtToken = GenerateJwtToken(newUser);
 
             var result = new RegisterUserResult
             {
@@ -74,10 +78,30 @@ namespace Roomies.Application.Services
                     ErrorCodes.InvalidCredentials, HttpStatusCode.Unauthorized);
             }
 
-            var token = GenerateJwtToken(user, request.TokenSecret);
+            var token = GenerateJwtToken(user);
 
             return ServiceResponse<LoginResponseDto, Enum>.Success(
                 new LoginResponseDto { Token = token });
+        }
+
+        public async Task<ServiceResponse<UserDetailsDto, Enum>> GetUserDetailsByIdAsync(Guid userId)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return ServiceResponse<UserDetailsDto, Enum>.Failure(
+                    ErrorCodes.UserNotFound,
+                    HttpStatusCode.NotFound
+                );
+            }
+
+            return ServiceResponse<UserDetailsDto, Enum>.Success(
+                new UserDetailsDto
+                {
+                    Name = user.Name,
+                    Email = user.Email
+                }
+            );
         }
 
         private async Task<Enum> ValidateUserAsync(RegisterUserDto registerUserDto)
@@ -111,11 +135,11 @@ namespace Roomies.Application.Services
             return null;
         }
 
-        private string GenerateJwtToken(User user, string tokenSecret)
+        private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            var key = Encoding.UTF8.GetBytes(tokenSecret);
+            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:TokenSecret"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -126,7 +150,10 @@ namespace Roomies.Application.Services
                     new Claim(ClaimTypes.Email, user.Email)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Audience = _configuration["Jwt:Audience"],
+                Issuer = _configuration["Jwt:Issuer"]
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

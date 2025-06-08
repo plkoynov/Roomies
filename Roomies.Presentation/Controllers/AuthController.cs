@@ -9,18 +9,15 @@ namespace Roomies.Presentation.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly IValidator<RegisterUserRequest> _registerUserValidator;
         private readonly IValidator<LoginRequest> _loginRequestValidator;
 
         public AuthController(
-            IConfiguration configuration,
             IUserService userService,
             IValidator<RegisterUserRequest> registerUserValidator,
             IValidator<LoginRequest> loginRequestValidator)
         {
-            _configuration = configuration;
             _userService = userService;
             _registerUserValidator = registerUserValidator;
             _loginRequestValidator = loginRequestValidator;
@@ -43,7 +40,7 @@ namespace Roomies.Presentation.Controllers
             }
 
             var result = await _userService.RegisterUserAsync(
-                request.ToRegisterUserDto(_configuration["Jwt:TokenSecret"]));
+                request.ToRegisterUserDto());
 
             if (!result.IsSuccess)
             {
@@ -70,7 +67,7 @@ namespace Roomies.Presentation.Controllers
             }
 
             var result = await _userService.AuthenticateUser(
-                request.ToLoginRequestDto(_configuration["Jwt:TokenSecret"]));
+                request.ToLoginRequestDto());
 
             if (!result.IsSuccess)
             {

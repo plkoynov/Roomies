@@ -9,4 +9,6 @@ public interface IUserService
 
     Task<ServiceResponse<LoginResponseDto, Enum>> AuthenticateUser(
         LoginRequestDto request);
+
+    Task<ServiceResponse<UserDetailsDto, Enum>> GetUserDetailsByIdAsync(Guid userId);
 }

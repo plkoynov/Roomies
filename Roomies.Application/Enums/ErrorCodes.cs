@@ -21,4 +21,7 @@ public enum ErrorCodes
 
     [Description("Invalid email or password.")]
     InvalidCredentials = 1005,
+
+    [Description("User not found.")]
+    UserNotFound = 1006,
 }

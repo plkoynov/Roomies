@@ -4,15 +4,13 @@ using Roomies.Presentation.Models;
 public static class AuthMappings
 {
     public static RegisterUserDto ToRegisterUserDto(
-        this RegisterUserRequest request,
-        string tokenSecret)
+        this RegisterUserRequest request)
     {
         return new RegisterUserDto
         {
             Name = request.Name,
             Email = request.Email,
-            Password = request.Password,
-            TokenSecret = tokenSecret
+            Password = request.Password
         };
     }
 
@@ -26,14 +24,12 @@ public static class AuthMappings
     }
 
     public static LoginRequestDto ToLoginRequestDto(
-        this LoginRequest request,
-        string tokenSecret)
+        this LoginRequest request)
     {
         return new LoginRequestDto
         {
             Email = request.Email,
-            Password = request.Password,
-            TokenSecret = tokenSecret
+            Password = request.Password
         };
     }
 }

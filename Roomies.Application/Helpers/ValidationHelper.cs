@@ -21,4 +21,14 @@ public static class ValidationHelper
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", RegexOptions.Compiled);
         return passwordRegex.IsMatch(password);
     }
+
+    public static bool VerifyPasswordHash(string password, string hashedPassword)
+    {
+        if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(hashedPassword))
+        {
+            return false;
+        }
+
+        return BCrypt.Net.BCrypt.EnhancedVerify(password, hashedPassword);
+    }
 }

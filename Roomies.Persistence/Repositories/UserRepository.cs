@@ -14,13 +14,14 @@ namespace Roomies.Persistence.Repositories
         }
 
         public async Task<bool> EmailExistsAsync(string email)
-        {
-            return await _context.Users.AnyAsync(u => u.Email == email);
-        }
+        => await _context.Users
+            .AnyAsync(u => u.Email.Trim().ToLower() == email.Trim().ToLower());
 
         public async Task AddUserAsync(User user)
-        {
-            await _context.Users.AddAsync(user);
-        }
+        => await _context.Users.AddAsync(user);
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        => await _context.Users
+            .FirstOrDefaultAsync(u => u.Email.ToLower() == email.Trim().ToLower());
     }
 }

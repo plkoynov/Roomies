@@ -18,4 +18,7 @@ public enum ErrorCodes
 
     [Description("User already exists with the provided email.")]
     UserAlreadyExists = 1004,
+
+    [Description("Invalid email or password.")]
+    InvalidCredentials = 1005,
 }

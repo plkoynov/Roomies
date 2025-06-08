@@ -64,8 +64,23 @@ namespace Roomies.Application.Services
             return ServiceResponse<RegisterUserResult, Enum>.Success(result);
         }
 
-        private async Task<Enum> ValidateUserAsync(
-            RegisterUserDto registerUserDto)
+        public async Task<ServiceResponse<LoginResponseDto, Enum>> AuthenticateUser(
+            LoginRequestDto request)
+        {
+            var user = await _userRepository.GetUserByEmailAsync(request.Email);
+            if (user == null || !ValidationHelper.VerifyPasswordHash(request.Password, user?.Password))
+            {
+                return ServiceResponse<LoginResponseDto, Enum>.Failure(
+                    ErrorCodes.InvalidCredentials, HttpStatusCode.Unauthorized);
+            }
+
+            var token = GenerateJwtToken(user, request.TokenSecret);
+
+            return ServiceResponse<LoginResponseDto, Enum>.Success(
+                new LoginResponseDto { Token = token });
+        }
+
+        private async Task<Enum> ValidateUserAsync(RegisterUserDto registerUserDto)
         {
             if (registerUserDto == null)
             {
@@ -107,16 +122,14 @@ namespace Roomies.Application.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email)
                 }),
-                Expires = DateTime.UtcNow.AddHours(24),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
             return tokenHandler.WriteToken(token);
         }
     }

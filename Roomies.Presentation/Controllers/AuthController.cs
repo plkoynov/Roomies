@@ -12,15 +12,18 @@ namespace Roomies.Presentation.Controllers
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly IValidator<RegisterUserRequest> _registerUserValidator;
+        private readonly IValidator<LoginRequest> _loginRequestValidator;
 
         public AuthController(
             IConfiguration configuration,
             IUserService userService,
-            IValidator<RegisterUserRequest> registerUserValidator)
+            IValidator<RegisterUserRequest> registerUserValidator,
+            IValidator<LoginRequest> loginRequestValidator)
         {
             _configuration = configuration;
             _userService = userService;
             _registerUserValidator = registerUserValidator;
+            _loginRequestValidator = loginRequestValidator;
         }
 
         /// <summary>
@@ -48,6 +51,33 @@ namespace Roomies.Presentation.Controllers
             }
 
             return Ok(result.Data.ToRegisterUserResponse());
+        }
+
+        /// <summary>
+        /// Authenticates a user and returns a JWT token upon successful login.
+        /// </summary>
+        /// <param name="request">The login request containing user credentials.</param>
+        /// <returns>A response containing the JWT token if successful, or an error message if authentication fails.</returns>
+        /// <response code="200">Login successful. Returns the JWT token.</response>
+        /// <response code="401">Invalid credentials. Returns an error message.</response>
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest request)
+        {
+            var validationResult = await _loginRequestValidator.ValidateAsync(request);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
+            var result = await _userService.AuthenticateUser(
+                request.ToLoginRequestDto(_configuration["Jwt:TokenSecret"]));
+
+            if (!result.IsSuccess)
+            {
+                return Unauthorized(result.Error);
+            }
+
+            return Ok(new LoginResponse { Token = result.Data.Token });
         }
     }
 }

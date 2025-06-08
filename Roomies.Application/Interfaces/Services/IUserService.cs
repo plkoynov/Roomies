@@ -6,4 +6,7 @@ public interface IUserService
 {
     Task<ServiceResponse<RegisterUserResult, Enum>> RegisterUserAsync(
         RegisterUserDto registerUserDto);
+
+    Task<ServiceResponse<LoginResponseDto, Enum>> AuthenticateUser(
+        LoginRequestDto request);
 }

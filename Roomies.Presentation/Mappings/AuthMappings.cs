@@ -24,4 +24,16 @@ public static class AuthMappings
             Token = registerUserResult.Token
         };
     }
+
+    public static LoginRequestDto ToLoginRequestDto(
+        this LoginRequest request,
+        string tokenSecret)
+    {
+        return new LoginRequestDto
+        {
+            Email = request.Email,
+            Password = request.Password,
+            TokenSecret = tokenSecret
+        };
+    }
 }

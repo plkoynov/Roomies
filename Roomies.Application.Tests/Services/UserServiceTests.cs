@@ -6,7 +6,6 @@ using Roomies.Application.Interfaces.Services;
 using Roomies.Application.Models;
 using Roomies.Application.Services;
 using Roomies.Domain.Entities;
-using Xunit;
 
 namespace Roomies.Application.Tests.Services
 {
@@ -131,6 +130,84 @@ namespace Roomies.Application.Tests.Services
             // Assert
             Assert.False(result.IsSuccess);
             Assert.Equal(ErrorCodes.InvalidPasswordFormat, result.Error);
+        }
+
+        [Fact]
+        public async Task AuthenticateUser_ShouldReturnSuccess_WhenCredentialsAreValid()
+        {
+            // Arrange
+            var loginRequestDto = new LoginRequestDto
+            {
+                Email = "test@example.com",
+                Password = "ValidPassword123!",
+                TokenSecret = "SomeReallyReallyReallyReallyLongTokenSecret"
+            };
+
+            var user = new User
+            {
+                Name = "Test User",
+                Email = "test@example.com",
+                Password = BCrypt.Net.BCrypt.EnhancedHashPassword(loginRequestDto.Password)
+            };
+
+            _userRepositoryMock.Setup(repo => repo.GetUserByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+
+            // Act
+            var result = await _userService.AuthenticateUser(loginRequestDto);
+
+            // Assert
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Data);
+            Assert.IsType<LoginResponseDto>(result.Data);
+        }
+
+        [Fact]
+        public async Task AuthenticateUser_ShouldReturnFailure_WhenEmailIsInvalid()
+        {
+            // Arrange
+            var loginRequestDto = new LoginRequestDto
+            {
+                Email = "invalid@example.com",
+                Password = "ValidPassword123!"
+            };
+
+            _userRepositoryMock.Setup(repo => repo.GetUserByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(default(User));
+
+            // Act
+            var result = await _userService.AuthenticateUser(loginRequestDto);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.Equal(ErrorCodes.InvalidCredentials, result.Error);
+        }
+
+        [Fact]
+        public async Task AuthenticateUser_ShouldReturnFailure_WhenPasswordIsIncorrect()
+        {
+            // Arrange
+            var loginRequestDto = new LoginRequestDto
+            {
+                Email = "test@example.com",
+                Password = "WrongPassword123!"
+            };
+
+            var user = new User
+            {
+                Email = "test@example.com",
+                Password = BCrypt.Net.BCrypt.EnhancedHashPassword("hashedpassword")
+            };
+
+            _userRepositoryMock.Setup(repo => repo.GetUserByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(user);
+
+            // Act
+            var result = await _userService.AuthenticateUser(loginRequestDto);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.Equal(ErrorCodes.InvalidCredentials, result.Error);
         }
     }
 }

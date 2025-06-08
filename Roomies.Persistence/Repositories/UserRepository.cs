@@ -20,11 +20,11 @@ namespace Roomies.Persistence.Repositories
         public async Task AddUserAsync(User user)
         => await _context.Users.AddAsync(user);
 
-        public async Task<User?> GetUserByEmailAsync(string email)
+        public async Task<User> GetUserByEmailAsync(string email)
         => await _context.Users
             .FirstOrDefaultAsync(u => u.Email.ToLower() == email.Trim().ToLower());
 
-        public async Task<User?> GetUserByIdAsync(Guid userId)
+        public async Task<User> GetUserByIdAsync(Guid userId)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }

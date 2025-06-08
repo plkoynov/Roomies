@@ -27,6 +27,8 @@ bld/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+bin/
+obj/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
@@ -52,3 +54,22 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide

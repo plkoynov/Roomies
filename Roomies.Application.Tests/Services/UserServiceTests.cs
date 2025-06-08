@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using Roomies.Application.Enums;
 using Roomies.Application.Interfaces;
@@ -17,13 +18,18 @@ namespace Roomies.Application.Tests.Services
     {
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<IConfiguration> _configurationMock;
         private readonly IUserService _userService;
 
         public UserServiceTests()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _userService = new UserService(_userRepositoryMock.Object, _unitOfWorkMock.Object);
+            _configurationMock = new Mock<IConfiguration>();
+            _userService = new UserService(
+                _configurationMock.Object,
+                _userRepositoryMock.Object,
+                _unitOfWorkMock.Object);
         }
 
         [Fact]
@@ -62,12 +68,18 @@ namespace Roomies.Application.Tests.Services
             _unitOfWorkMock.Setup(uow => uow.SaveChangesAsync())
                 .Returns(Task.CompletedTask);
 
+            _configurationMock.Setup(c => c["Jwt:TokenSecret"])
+                .Returns("SomeReallyReallyReallyReallyLongTokenSecret");
+            _configurationMock.Setup(c => c["Jwt:Issuer"])
+                .Returns("RoomiesIssuer");
+            _configurationMock.Setup(c => c["Jwt:Audience"])
+                .Returns("RoomiesAudience");
+
             var registerUserDto = new RegisterUserDto
             {
                 Name = "Test User",
                 Email = "test@example.com",
-                Password = "Password123!",
-                TokenSecret = "SomeReallyReallyReallyReallyLongTokenSecret"
+                Password = "Password123!"
             };
 
             // Act
@@ -143,8 +155,7 @@ namespace Roomies.Application.Tests.Services
             var loginRequestDto = new LoginRequestDto
             {
                 Email = "test@example.com",
-                Password = "ValidPassword123!",
-                TokenSecret = "SomeReallyReallyReallyReallyLongTokenSecret"
+                Password = "ValidPassword123!"
             };
 
             var user = new User
@@ -156,6 +167,13 @@ namespace Roomies.Application.Tests.Services
 
             _userRepositoryMock.Setup(repo => repo.GetUserByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(user);
+
+            _configurationMock.Setup(c => c["Jwt:TokenSecret"])
+                .Returns("SomeReallyReallyReallyReallyLongTokenSecret");
+            _configurationMock.Setup(c => c["Jwt:Issuer"])
+                .Returns("RoomiesIssuer");
+            _configurationMock.Setup(c => c["Jwt:Audience"])
+                .Returns("RoomiesAudience");
 
             // Act
             var result = await _userService.AuthenticateUser(loginRequestDto);

@@ -11,7 +11,7 @@ public class Expense : IAuditableEntity
     public Guid CategoryId { get; set; }
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
-    public string? Description { get; set; }
+    public string Description { get; set; }
     public OwnershipType OwnershipTypeId { get; set; }
     public PaymentStatus PaymentStatusId { get; set; }
     public Guid CreatedBy { get; set; }

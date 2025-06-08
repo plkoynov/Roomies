@@ -16,6 +16,9 @@ namespace Roomies.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(h => h.Description)
+                .HasMaxLength(500);
+
             // Configure CreatedBy as a required foreign key referencing User
             builder.Property(h => h.CreatedBy)
                 .IsRequired();

@@ -4,6 +4,9 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  ValidatorFn,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -30,11 +33,32 @@ export class RegistrationFormComponent {
 
   form: FormGroup;
 
+  passwordMatchValidator: ValidatorFn = (control: AbstractControl) => {
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { mismatch: true };
+  };
+
+  passwordComplexityValidator: ValidatorFn = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
+    const value = control.value;
+    if (!value) return null;
+    const hasMinLength = value.length > 8;
+    const hasLower = /[a-z]/.test(value);
+    const hasUpper = /[A-Z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecial = /[^A-Za-z0-9]/.test(value);
+    return hasMinLength && hasLower && hasUpper && hasNumber && hasSpecial
+      ? null
+      : { passwordComplexity: true };
+  };
+
   constructor(private fb: FormBuilder) {
-    this.form = this.fb.group(
+    this.form = this.fb.nonNullable.group(
       {
         email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
+        password: ['', [Validators.required, this.passwordComplexityValidator]],
         confirmPassword: ['', [Validators.required]],
       },
       { validators: this.passwordMatchValidator }
@@ -49,12 +73,6 @@ export class RegistrationFormComponent {
   }
   get confirmPassword() {
     return this.form?.get('confirmPassword');
-  }
-
-  passwordMatchValidator(form: FormGroup) {
-    return form?.get('password')?.value === form?.get('confirmPassword')?.value
-      ? null
-      : { mismatch: true };
   }
 
   onSubmit() {

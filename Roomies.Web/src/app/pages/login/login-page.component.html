@@ -7,9 +7,18 @@
       </div>
     </div>
     <div class="login-card">
-      <app-login-form></app-login-form>
+      <app-login-form
+        *ngIf="!showRegistration; else registration"
+        (signUpClicked)="showRegisterForm()"
+      >
+      </app-login-form>
+      <ng-template #registration>
+        <app-registration-form (backToLoginClicked)="showLoginForm()">
+        </app-registration-form>
+      </ng-template>
     </div>
   </div>
+
   <div class="login-right">
     <div class="login-description">
       Track expenses, split bills, and keep your household budget stress-free.

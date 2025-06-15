@@ -1,0 +1,16 @@
+mat-form-field {
+  width: 400px;
+}
+
+.login-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  button {
+    flex: 1;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+}

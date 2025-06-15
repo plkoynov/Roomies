@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -26,6 +26,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
+  @Output() signUpClicked = new EventEmitter<void>();
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {

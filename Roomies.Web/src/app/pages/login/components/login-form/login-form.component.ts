@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -22,10 +22,13 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatIconModule,
   ],
+
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
+  @Input() onSubmitHandler!: (form: FormGroup) => void;
+
   @Output() signUpClicked = new EventEmitter<void>();
   form: FormGroup;
 
@@ -45,7 +48,7 @@ export class LoginFormComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      // handle login
+      this.onSubmitHandler(this.form);
     } else {
       this.form.markAllAsTouched();
     }

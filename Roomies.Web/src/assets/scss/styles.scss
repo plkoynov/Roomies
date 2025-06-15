@@ -1,0 +1,15 @@
+@use 'globals';
+@use 'theme';
+
+@for $i from 0 through 5 {
+  .mb-#{$i} {
+    margin-bottom: #{$i * 0.25}rem !important;
+  }
+}
+
+$display-values: none, block, inline-block, flex, inline-flex, grid;
+@each $value in $display-values {
+  .display-#{$value} {
+    display: #{$value} !important;
+  }
+}

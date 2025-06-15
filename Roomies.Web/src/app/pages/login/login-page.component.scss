@@ -1,63 +1,63 @@
 .login-page {
   display: flex;
   height: 100vh;
-  background: #6c63ff;
+  background: var(--mat-sys-primary);
 }
 
 .login-left {
-  width: 50%;
-  background: #6750a4;
+  flex: 1;
+  background: var(--mat-sys-primary);
   color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 4px 0 16px 16px rgba(0,0,0,0.25);
+  box-shadow: 4px 0 16px 16px rgba(0, 0, 0, 0.25);
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .roomies-title {
+    font-size: 3rem;
+    font-weight: 500;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .roomies-subtitle {
+    font-size: 1.5em;
+    margin-top: 1rem;
+  }
+
+  .login-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 8px 4px 16px 8px rgba(0, 0, 0, 0.25);
+    padding: 2rem;
+    min-width: 320px;
+  }
 }
 
-.login-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-.roomies-title {
-  font-size: 45px;
-  font-weight: 500;
-  text-shadow: 0px 4px 4px rgba(0,0,0,0.25);
-  display: block;
-}
-.roomies-subtitle {
-  font-size: 22px;
-  font-weight: 500;
-  margin-top: 1rem;
-  display: block;
-}
-.login-card {
-  background: #fff;
-  color: #49454f;
-  border-radius: 8px;
-  box-shadow: 8px 4px 16px 8px rgba(0,0,0,0.25);
-  padding: 2rem;
-  width: 320px;
-}
 .login-right {
-  width: 50%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background: #fff;
-}
-.login-illustration {
-  margin-bottom: 2rem;
-}
-.login-illustration img {
-  width: 400px;
-  max-width: 100%;
-}
-.login-description {
-  color: #6c63ff;
-  font-size: 16px;
-  font-weight: 600;
-  text-align: center;
-  max-width: 480px;
+
+  .login-description {
+    color: var(--mat-sys-primary);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .login-illustration {
+    margin-top: 2rem;
+
+    img {
+      width: 400px;
+      max-width: 100%;
+    }
+  }
 }

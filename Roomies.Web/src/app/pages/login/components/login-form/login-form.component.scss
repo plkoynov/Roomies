@@ -1,21 +1,15 @@
-.login-field {
-  width: 100%;
-  margin-bottom: 1.5rem;
-
-  .mat-form-field-outline {
-    color: #6750A4;
-  }
+mat-form-field {
+  width: 400px;
 }
 
 .forgot-password {
   text-align: right;
-  margin-bottom: 1.5rem;
-}
 
-.forgot-password a {
-  color: #6750a4;
-  text-decoration: none;
-  font-weight: 500;
+  a {
+    color: var(--mat-sys-primary);
+    text-decoration: underline;
+    font-weight: 500;
+  }
 }
 
 .login-actions {
@@ -24,7 +18,7 @@
   gap: 1rem;
 
   button {
-    min-width: 120px;
+    flex: 1;
     border-radius: 8px;
     font-weight: 600;
     font-size: 1rem;

@@ -29,14 +29,15 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets/images"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/assets/scss/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/assets/styles/variables"
+                "src/assets/styles"
               ]
             },
             "scripts": []
@@ -93,14 +94,15 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets/images"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/assets/scss/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/assets/styles"
+                "src/assets/scss"
               ]
             },
             "scripts": []

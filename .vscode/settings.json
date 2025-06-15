@@ -1,0 +1,30 @@
+{
+    "window.autoDetectColorScheme": true,
+    "editor.formatOnSave": true,
+    "editor.wordWrap": "on",
+    "html.format.wrapAttributes": "force-aligned",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "prettier.singleQuote": true
+    },
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp",
+        "editor.codeActionsOnSave": [
+            "source.organizeImports",
+            "source.fixAll"
+        ]
+    },
+    "dotnet.formatting.organizeImportsOnFormat": true,
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+    "prettier.singleQuote": true
+}

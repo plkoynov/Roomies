@@ -1,0 +1,63 @@
+.login-page {
+  display: flex;
+  height: 100vh;
+  background: #6c63ff;
+}
+
+.login-left {
+  width: 50%;
+  background: #6750a4;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 4px 0 16px 16px rgba(0,0,0,0.25);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.roomies-title {
+  font-size: 45px;
+  font-weight: 500;
+  text-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+  display: block;
+}
+.roomies-subtitle {
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 1rem;
+  display: block;
+}
+.login-card {
+  background: #fff;
+  color: #49454f;
+  border-radius: 8px;
+  box-shadow: 8px 4px 16px 8px rgba(0,0,0,0.25);
+  padding: 2rem;
+  width: 320px;
+}
+.login-right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+.login-illustration {
+  margin-bottom: 2rem;
+}
+.login-illustration img {
+  width: 400px;
+  max-width: 100%;
+}
+.login-description {
+  color: #6c63ff;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  max-width: 480px;
+}
